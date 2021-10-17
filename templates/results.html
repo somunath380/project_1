@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<h1>{{the_title}}</h1>
+
+<h2>You have entered the following</h2>
+
+<table>
+    <tr><td>Car Name: </td><td>{{the_form_data.get("name")}}</td></tr>
+    <tr><td>KM driven: </td><td>{{the_form_data.get("km_driven")}}</td></tr>
+    <tr><td>Engine power: </td><td>{{the_form_data.get("max_power")}}</td></tr>
+    <tr><td>Number of Seats: </td><td>{{the_form_data.get("seats")}}</td></tr>
+    <tr><td>Mileage: </td><td>{{the_form_data.get("mileage_num")}}</td></tr>
+    <tr><td>Engine type(CC): </td><td>{{the_form_data.get("engine_num")}}</td></tr>
+    <tr><td>Torque(NM): </td><td>{{the_form_data.get("torque_NM")}}</td></tr>
+
+    <tr><td>Torque(rpm): </td><td>{{the_form_data.get("torque_rpm")}}</td></tr>
+    <tr><td>Age of the Car: </td><td>{{the_form_data.get("no_year")}}</td></tr>
+    <tr><td>Fuel type: </td><td>{{the_form_data.get("fuel")}}</td></tr>
+    <tr><td>Seller type: </td><td>{{the_form_data.get("seller")}}</td></tr>
+    <tr><td>Transmission type? </td><td>{{the_form_data.get("transmission")}}</td></tr>
+    <tr><td>Owners had: </td><td>{{the_form_data.get("owner")}}</td></tr>
+</table>
+
+
+
+
+
+<h1>The estimated price is {{ the_prediction }}</h1>
+{% endblock %}
