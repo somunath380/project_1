@@ -1,8 +1,8 @@
 from os import name
 from flask import Flask, render_template, url_for, request
 import pickle
-import numpy as np
 import mysql.connector
+import sklearn
 
 app = Flask(__name__)
 
