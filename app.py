@@ -1,22 +1,21 @@
 from os import name
 from flask import Flask, render_template, url_for, request
 import pickle
-import mysql.connector
 import sklearn
+import sqlite3
 
 app = Flask(__name__)
 
 
 knn = pickle.load(open('knn.pkl', 'rb'))
 
-def log_request(req, res):
-    dbconfig = {'host':'127.0.0.1','user':'admin007','password':'Admin123#','database':'cars'}
-    conn = mysql.connector.connect(**dbconfig)
-    cursor = conn.cursor()
-    _sql = """insert into log (ip, browser_string, car_name, km_driven, max_power, seats, mileage_num, engine_num, torque_NM, torque_rpm, no_year, fuel, seller_type, transmission, owner, estimated_price) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
-    cursor.execute(_sql, (req.remote_addr, req.user_agent.browser, req.form['name'], req.form['km_driven'], req.form['max_power'], req.form['seats'], req.form['mileage_num'], req.form['engine_num'], req.form['torque_NM'], req.form['torque_rpm'], req.form['no_year'], req.form['fuel'], req.form['seller'],req.form['transmission'],req.form['owner'], str(res)))
+def log_data_sqlite(req, res):
+    conn = sqlite3.connect('cars.db')
+    curr = conn.cursor()
+    _sql = """insert into log (ip, browser_string, car_name, km_driven, max_power, seats, mileage_num, engine_num, torque_NM, torque_rpm, no_year, fuel, seller_type, transmission, owner, estimated_price) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"""
+    curr.execute(_sql, (req.remote_addr, req.user_agent.browser, req.form['name'], req.form['km_driven'], req.form['max_power'], req.form['seats'], req.form['mileage_num'], req.form['engine_num'], req.form['torque_NM'], req.form['torque_rpm'], req.form['no_year'], req.form['fuel'], req.form['seller'],req.form['transmission'],req.form['owner'], str(res)))
     conn.commit()
-    cursor.close()
+    curr.close()
     conn.close()
 
 @app.route('/')
@@ -25,15 +24,13 @@ def entry_page():
     return render_template('entry.html', the_title='welcome')
 
 
-
 @app.route('/admin')
 def view_data():
-   dbconfig = {'host':'127.0.0.1','user':'admin007','password':'Admin123#','database':'cars'}
-   conn = mysql.connector.connect(**dbconfig)
-   cursor = conn.cursor()
+   conn = sqlite3.connect('cars.db')
+   curr = conn.cursor()
    _sql = """select * from log"""
-   cursor.execute(_sql)
-   res = cursor.fetchall()
+   curr.execute(_sql)
+   res = curr.fetchall()
    return render_template('database.html', res=res) 
 
 
@@ -109,7 +106,7 @@ def get_data():
 
     values = [[km_driven, max_power, seats, mileage_num, engine_num, torque_NM, torque_rpm, no_year, fuel_Diesel, fuel_LPG, fuel_Petrol, seller_type_Individual, seller_type_Trustmark_Dealer, transmission_Manual, owner_Fourth, owner_Second, owner_Test_Drive_Car, owner_Third]]
     the_prediction = knn.predict(values)
-    log_request(request, the_prediction)
+    log_data_sqlite(request, the_prediction)
     return render_template('results.html',the_title=title,the_form_data=the_form_data,the_prediction=the_prediction)
     
 
