@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<h1> {{ the_title}} </h1>
+<body>
+    <form action="/search" method = "POST">
+        <p>Your car name? <input type = "text" name = "name" required='required'/></p>
+        <p>How much distance the car has driven? <input type = "text" name = "km_driven" required='required'/></p>
+        <p>What is the engine power of the car <input type = "text" name = "max_power" required='required'/></p>
+        <p>How many seats are there <input type = "text" name = "seats" required='required'/></p>
+        <p>What is its mileage<input type = "text" name = "mileage_num" required='required'/></p>
+        <p>what is its engine type in CC <input type = "text" name = "engine_num" required='required'/></p>
+        <p>What is its torque in NM<input type = "text" name = "torque_NM" /></p>
+        <p>What is its torque in RPM<input type = "text" name = "torque_rpm" /></p>
+        <p>How many years ago it was bought? <input type = "text" name = "no_year" required='required'/></p>
+        <p>What is its fuel type?
+            <select name="fuel" required='required'>
+                <option value="petrol">Petrol</option>
+                <option value="diesel">DIesel</option>
+                <option value="lpg">LPG</option>
+            </select>
+        </p>
+
+
+        <p>What is its seller type?
+            <select name="seller" required='required'>
+                <option value="individual">individual</option>
+                <option value="Dealer">Dealer</option>
+            </select>
+        </p>
+
+        <p>What is its transmission type?
+            <select name="transmission" required='required'>
+                <option value="automatic">automatic</option>
+                <option value="manual">manual</option>
+            </select>
+        </p>
+
+        <p>How much owners it had previously?
+            <select name="owner" required='required'>
+                <option value="1st">First</option>
+                <option value="2nd">Second</option>
+                <option value="3rd">Third</option>
+                <option value="4th">Fourth & above</option>
+                <option value="Test_drive">Test drive car</option>
+            </select>
+        </p>
+
+
+
+
+
+
+        <p><input type = "submit" value = "Submit" /></p>
+    </form>
+</body>
+{% endblock %}
